@@ -25,7 +25,7 @@
             if (mealToList != null && !mealToList.isEmpty()) {
                 out.println("<ul class=\"w3-ul\">");
                 for (MealTo mealTo : mealToList) {
-                    if (mealTo.isExcess()) {
+                    if (!mealTo.isExcess()) {
                         out.println("<li class=\"w3-green w3-left-align\">" + mealTo.getStringValue() + "</li>");
                     } else out.println("<li class=\"w3-red w3-left-align\">" + mealTo.getStringValue() + "</li>");
 
