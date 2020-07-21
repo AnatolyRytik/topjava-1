@@ -4,10 +4,13 @@ import ru.javawebinar.topjava.model.Meal;
 
 import java.time.LocalDateTime;
 import java.time.Month;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
-public class MealDaoImpl {
+public class MealDaoImpl implements MealDAO {
+    private static final AtomicInteger AUTO_ID = new AtomicInteger(0);
+    private static Map<Integer, Meal> mealMap = new HashMap<>();
+
     private static List<Meal> mealsList = Arrays.asList(
             new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0), "Завтрак", 500),
             new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 13, 0), "Обед", 1000),
@@ -18,7 +21,29 @@ public class MealDaoImpl {
             new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 20, 0), "Ужин", 410)
     );
 
-    public static List<Meal> getMeals() {
-        return mealsList;
+    @Override
+    public List<Meal> allMeals() {
+        return new ArrayList<>(mealMap.values());
+    }
+
+    @Override
+    public void add(Meal meal) {
+        meal.setId(AUTO_ID.getAndIncrement());
+        mealMap.put(meal.getId(), meal);
+    }
+
+    @Override
+    public void delete(Meal meal) {
+        mealMap.remove(meal.getId());
+    }
+
+    @Override
+    public void edit(Meal meal) {
+        mealMap.put(meal.getId(), meal);
+    }
+
+    @Override
+    public Meal getById(int id) {
+        return mealMap.get(id);
     }
 }
