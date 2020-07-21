@@ -1,7 +1,7 @@
 package ru.javawebinar.topjava.web;
 
 import org.slf4j.Logger;
-import ru.javawebinar.topjava.dao.MealListHardCode;
+import ru.javawebinar.topjava.dao.MealDaoImpl;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.model.MealTo;
 import ru.javawebinar.topjava.util.MealsUtil;
@@ -23,7 +23,7 @@ public class MealServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, NullPointerException {
         log.debug("redirect to meals");
-        List<Meal> mealsList = MealListHardCode.getMeals();
+        List<Meal> mealsList = MealDaoImpl.getMeals();
         List<MealTo> mealToList = MealsUtil.filteredByStreams(mealsList, LocalTime.MIN, LocalTime.MAX, 2000);
         request.setAttribute("meals", mealToList);
         request.getRequestDispatcher("/meals.jsp").forward(request, response);
