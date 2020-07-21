@@ -23,7 +23,8 @@ public class MealServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, NullPointerException {
         log.debug("redirect to meals");
-        List<Meal> mealsList = MealDaoImpl.getMeals();
+        MealDaoImpl mealDao = new MealDaoImpl();
+        List<Meal> mealsList = mealDao.allMeals();
         List<MealTo> mealToList = MealsUtil.filteredByStreams(mealsList, LocalTime.MIN, LocalTime.MAX, 2000);
         request.setAttribute("meals", mealToList);
         request.getRequestDispatcher("/meals.jsp").forward(request, response);
