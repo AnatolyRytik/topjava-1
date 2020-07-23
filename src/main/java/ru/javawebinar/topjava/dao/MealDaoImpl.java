@@ -8,8 +8,8 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class MealDaoImpl implements MealDAO {
-    private static final AtomicInteger AUTO_ID = new AtomicInteger(0);
-    private static Map<Integer, Meal> mealMap = new HashMap<>();
+    private final AtomicInteger AUTO_ID = new AtomicInteger(0);
+    private Map<Integer, Meal> mealMap = new HashMap<>();
 
     {
         add(new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0), "Завтрак", 500));
@@ -28,8 +28,10 @@ public class MealDaoImpl implements MealDAO {
 
     @Override
     public void add(Meal meal) {
-        meal.setId(AUTO_ID.getAndIncrement());
-        mealMap.put(meal.getId(), meal);
+        if (meal.getId() == 0) {
+            meal.setId(AUTO_ID.incrementAndGet());
+            mealMap.put(meal.getId(), meal);
+        }
     }
 
     @Override
@@ -39,7 +41,7 @@ public class MealDaoImpl implements MealDAO {
 
     @Override
     public void edit(Meal meal) {
-        mealMap.put(meal.getId(), meal);
+        mealMap.computeIfPresent(meal.getId(), (key, value) -> value = meal);
     }
 
     @Override

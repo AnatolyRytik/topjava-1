@@ -1,46 +1,6 @@
-<%@ page import="ru.javawebinar.topjava.model.MealTo" %>
-<%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
-
-
-<html>
-<head>
-    <title>Meals</title>
-    <link rel="stylesheet" href="styles/w3.css">
-</head>
-
-<body class="w3-light-grey">
-<div class="w3-container w3-blue-grey w3-opacity w3-left-align">
-    <h3><a href="index.html">Home</a></h3>
-    <h1>Meals</h1>
-</div>
-
-<div class="w3-container w3-center w3-margin-bottom w3-padding">
-    <div class="w3-card-4">
-        <div class="w3-container w3-blue-grey w3-opacity w3-left-align">
-            <h1>MealsList</h1>
-        </div>
-        <%
-            List<MealTo> mealToList = (List<MealTo>) request.getAttribute("meals");
-            if (mealToList != null && !mealToList.isEmpty()) {
-                out.println("<ul class=\"w3-ul\">");
-                for (MealTo mealTo : mealToList) {
-                    if (!mealTo.isExcess()) {
-                        out.println("<li class=\"w3-green w3-left-align\">" + mealTo.getStringValue() + "</li>");
-                    } else out.println("<li class=\"w3-red w3-left-align\">" + mealTo.getStringValue() + "</li>");
-
-                }
-                out.println("</ul>");
-            }
-        %>
-    </div>
-</div>
-
-</body>
-</html>
-
-
-<%--
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <html lang="ru">
 <head>
     <title>Meals</title>
@@ -48,16 +8,34 @@
 <body>
 <h3><a href="index.html">Home</a></h3>
 <hr>
-<h2>Meals</h2>
-<ul>
-    <%
-        List<MealTo> mealToList = (List<MealTo>) request.getAttribute("meals");
-        if (mealToList != null && !mealToList.isEmpty()) {
-            for (MealTo mealTo : mealToList) {
-                out.print("<li>" + mealTo.getStringValue() +"</li>");
-            }
-        }
-    %>
-</ul>
+<div>
+    <H1>Meals</H1>
+
+    <table border="1">
+        <thead>
+        <tr>
+            <th>Description</th>
+            <th>Calories</th>
+            <th>Date and time</th>
+            <th colspan=2>Action</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <jsp:useBean id="meals" scope="request" type="java.util.List<ru.javawebinar.topjava.model.MealTo>"/>
+        <c:forEach items="${meals}" var="meal">
+            <tr style="color: ${meal.excess ? 'red' : 'green'}">
+                <td><c:out value="${meal.description}"/></td>
+                <td><c:out value="${meal.calories}"/></td>
+                <fmt:parseDate value="${meal.dateTime}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both"/>
+                <td><fmt:formatDate pattern="dd.MM.yyyy HH:mm" value="${ parsedDateTime }"/></td>
+                <td><a href="meals?action=edit&mealsId=<c:out value="${meal.id}"/>">Update</a></td>
+                <td><a href="meals?action=delete&mealsId=<c:out value="${meal.id}"/>">Delete</a></td>
+            </tr>
+        </c:forEach>
+        </tbody>
+    </table>
+    <a href="meals?action=add">Add new meal</a>
+</div>
 </body>
-</html>--%>
+</html>

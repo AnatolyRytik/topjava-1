@@ -19,14 +19,40 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 public class MealServlet extends HttpServlet {
     private static final Logger log = getLogger(MealServlet.class);
+    private MealDaoImpl mealDao = new MealDaoImpl();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, NullPointerException {
         log.debug("redirect to meals");
-        MealDaoImpl mealDao = new MealDaoImpl();
-        List<Meal> mealsList = mealDao.allMeals();
-        List<MealTo> mealToList = MealsUtil.filteredByStreams(mealsList, LocalTime.MIN, LocalTime.MAX, 2000);
-        request.setAttribute("meals", mealToList);
-        request.getRequestDispatcher("/meals.jsp").forward(request, response);
+        String action = request.getParameter("action");
+
+        switch (action == null ? "" : action.toLowerCase()) {
+            case "delete": {
+                int mealId = Integer.parseInt(request.getParameter("userId"));
+                Meal meal = mealDao.getById(mealId);
+                mealDao.delete(meal);
+                response.sendRedirect("meals");
+                break;
+            }
+            case "edit": {
+                int userId = Integer.parseInt(request.getParameter("userId"));
+                Meal meal = mealDao.getById(userId);
+                request.setAttribute("meal", meal);
+                request.getRequestDispatcher("editMeal.jsp").forward(request, response);
+                break;
+            }
+            case "add": {
+                request.getRequestDispatcher("createMeal.jsp").forward(request, response);
+                break;
+            }
+            default: {
+                request.setAttribute("meals", MealsUtil.filteredByStreams(mealDao.allMeals(), LocalTime.MIN, LocalTime.MAX, 2000));
+                request.getRequestDispatcher("meals.jsp").forward(request, response);
+            }
+
+        }
     }
+
+
 }
+
