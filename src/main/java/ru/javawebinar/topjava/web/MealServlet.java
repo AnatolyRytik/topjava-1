@@ -69,8 +69,7 @@ public class MealServlet extends HttpServlet {
         if (mealId == 0) {
             mealDao.add(new Meal(dateTime, description, calories));
         } else {
-            Meal meal = mealDao.getById(mealId);
-            mealDao.update(new Meal(meal.getId(), dateTime, description, calories));
+            mealDao.update(new Meal(mealId, dateTime, description, calories));
         }
 
         request.setAttribute("meals", MealsUtil.filteredByStreams(mealDao.allMeals(), LocalTime.MIN, LocalTime.MAX, 2000));
