@@ -40,7 +40,7 @@ public class MealDaoImpl implements MealDAO {
     }
 
     @Override
-    public void edit(Meal meal) {
+    public void update(Meal meal) {
         mealMap.computeIfPresent(meal.getId(), (key, value) -> value = meal);
     }
 

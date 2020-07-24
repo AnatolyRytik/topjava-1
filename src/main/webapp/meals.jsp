@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<html lang="ru">
+<html>
 <head>
     <title>Meals</title>
 </head>
@@ -29,7 +29,7 @@
                 <td><c:out value="${meal.calories}"/></td>
                 <fmt:parseDate value="${meal.dateTime}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both"/>
                 <td><fmt:formatDate pattern="dd.MM.yyyy HH:mm" value="${ parsedDateTime }"/></td>
-                <td><a href="meals?action=edit&mealsId=<c:out value="${meal.id}"/>">Update</a></td>
+                <td><a href="meals?action=update&mealsId=<c:out value="${meal.id}"/>">Update</a></td>
                 <td><a href="meals?action=delete&mealsId=<c:out value="${meal.id}"/>">Delete</a></td>
             </tr>
         </c:forEach>
