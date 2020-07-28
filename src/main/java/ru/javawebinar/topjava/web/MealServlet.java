@@ -18,7 +18,12 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 public class MealServlet extends HttpServlet {
     private static final Logger log = getLogger(MealServlet.class);
-    private MealDaoInternal mealDao = new MealDaoInternal();
+    private MealDaoInternal mealDao;
+
+    @Override
+    public void init() throws ServletException {
+        mealDao = new MealDaoInternal();
+    }
 
 
     @Override
@@ -38,13 +43,13 @@ public class MealServlet extends HttpServlet {
                 int mealId = Integer.parseInt(request.getParameter("mealsId"));
                 Meal meal = mealDao.getById(mealId);
                 log.debug("Edit meal id = {}", mealId);
-                request.setAttribute("meal", meal);
+                request.setAttribute("mealForCustomizing", meal);
                 request.getRequestDispatcher("createMeal.jsp").forward(request, response);
                 break;
             }
             case "add": {
                 Meal meal = new Meal(LocalDateTime.now(), "", 1);
-                request.setAttribute("meal", meal);
+                request.setAttribute("mealForCustomizing", meal);
                 request.getRequestDispatcher("createMeal.jsp").forward(request, response);
                 break;
             }
