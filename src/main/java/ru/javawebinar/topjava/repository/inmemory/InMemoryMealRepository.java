@@ -22,7 +22,7 @@ public class InMemoryMealRepository implements MealRepository {
     }
 
     @Override
-    public Meal save(Meal meal, int currentUserId) {
+    public Meal save(Meal meal, Integer currentUserId) {
         repository.putIfAbsent(currentUserId, new ConcurrentHashMap<>());
         Map<Integer, Meal> mealMap = repository.get(currentUserId);
         if (meal.isNew()) {
@@ -35,18 +35,18 @@ public class InMemoryMealRepository implements MealRepository {
     }
 
     @Override
-    public boolean delete(int mealId, int currentUserId) {
+    public boolean delete(int mealId, Integer currentUserId) {
         return repository.get(currentUserId) != null && repository.get(currentUserId).remove(mealId) != null;
     }
 
     @Override
-    public Meal get(int mealId, int currentUserId) {
+    public Meal get(int mealId, Integer currentUserId) {
         return repository.get(currentUserId) != null ? repository.get(currentUserId).get(mealId) : null;
     }
 
     @Override
-    public Collection<Meal> getAll(int currentUserId) {
-        if (currentUserId != 0) {
+    public Collection<Meal> getAll(Integer currentUserId) {
+        if (currentUserId != null) {
             return repository.get(currentUserId).values()
                     .stream()
                     .sorted((m1, m2) -> m2.getDateTime().compareTo(m1.getDateTime()))
