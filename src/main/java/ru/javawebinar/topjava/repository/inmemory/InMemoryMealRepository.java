@@ -4,6 +4,7 @@ import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.util.MealsUtil;
+import ru.javawebinar.topjava.util.ValidationUtil;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -44,13 +45,12 @@ public class InMemoryMealRepository implements MealRepository {
     }
 
     @Override
-    public List<Meal> getAll(Integer currentUserId) throws NullPointerException {
-        if (currentUserId != null) {
-            return repository.get(currentUserId).values()
-                    .stream()
-                    .sorted((m1, m2) -> m2.getDateTime().compareTo(m1.getDateTime()))
-                    .collect(Collectors.toList());
-        } else {return Collections.emptyList();}
+    public List<Meal> getAll(Integer currentUserId){
+        return  repository.get(currentUserId) != null ? repository.get(currentUserId).values()
+                .stream()
+                .sorted((m1, m2) -> m2.getDateTime().compareTo(m1.getDateTime()))
+                .collect(Collectors.toList())
+                : Collections.emptyList();
     }
 }
 
