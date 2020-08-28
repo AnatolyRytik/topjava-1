@@ -40,10 +40,6 @@ public class MealServiceTest {
     @Autowired
     private MealService service;
 
-    @Autowired
-    private MealRepository repository;
-
-
     @Test
     public void get() {
         Meal meal = service.get(MEAL_ID, USER_ID);
