@@ -49,6 +49,6 @@ abstract public class AbstractServiceTest {
     }
 
     public boolean isJpa() {
-        return environment.acceptsProfiles(Profiles.JPA, Profiles.DATAJPA);
+        return environment.acceptsProfiles(org.springframework.core.env.Profiles.of(Profiles.JPA, Profiles.DATAJPA));
     }
 }
