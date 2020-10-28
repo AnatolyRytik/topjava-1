@@ -5,12 +5,11 @@
 <html>
 <jsp:include page="fragments/headTag.jsp"/>
 <body>
-<jsp:include page="fragments/bodyHeader.jsp" />
+<jsp:include page="fragments/bodyHeader.jsp"/>
 <section>
-    <h3><a href="index.html">Home</a></h3>
-    <hr>
     <h2><spring:message code="${meal.isNew() ? 'meal.add' : 'meal.edit'}"/></h2>
     <jsp:useBean id="meal" type="ru.javawebinar.topjava.model.Meal" scope="request"/>
+    <hr>
     <form method="post">
         <input type="hidden" name="id" value="${meal.id}">
         <dl>
@@ -29,6 +28,6 @@
         <button onclick="window.history.back()" type="button"><spring:message code="common.cancel"/></button>
     </form>
 </section>
-<jsp:include page="fragments/footer.jsp" />
+<jsp:include page="fragments/footer.jsp"/>
 </body>
 </html>

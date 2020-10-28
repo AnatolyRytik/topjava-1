@@ -1,18 +1,18 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="fn" uri="http://topjava.javawebinar.ru/functions" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="fn" uri="http://topjava.javawebinar.ru/functions" %>
+
 <html>
-<jsp:include page="fragments/headTag.jsp" />
+<jsp:include page="fragments/headTag.jsp"/>
 <body>
-<jsp:include page="fragments/bodyHeader.jsp" />
+<jsp:include page="fragments/bodyHeader.jsp"/>
 <section>
-    <h3><a href="index.jsp">Home</a></h3>
-    <hr/>
     <h2><spring:message code="meal.title"/></h2>
-    <form method="post" action="/meals">
-        <input type="hidden" name="action" value="filter">
+    <hr/>
+    <form method="post" action="meals/filter">
+
         <dl>
             <dt><spring:message code="meal.startDate"/></dt>
             <dd><input type="date" name="startDate" value="${param.startDate}"></dd>
@@ -40,11 +40,12 @@
             <th><spring:message code="meal.dateTime"/></th>
             <th><spring:message code="meal.description"/></th>
             <th><spring:message code="meal.calories"/></th>
-            <th colspan="2"><spring:message code="common.actions"/></th>
+            <th></th>
+            <th></th>
         </tr>
         </thead>
         <c:forEach items="${meals}" var="meal">
-            <jsp:useBean id="meal" type="ru.javawebinar.topjava.to.MealTo"/>
+            <jsp:useBean id="meal" scope="page" type="ru.javawebinar.topjava.to.MealTo"/>
             <tr data-mealExcess="${meal.excess}">
                 <td>
                         <%--${meal.dateTime.toLocalDate()} ${meal.dateTime.toLocalTime()}--%>
@@ -60,6 +61,6 @@
         </c:forEach>
     </table>
 </section>
-<jsp:include page="fragments/footer.jsp" />
+<jsp:include page="fragments/footer.jsp"/>
 </body>
 </html>
